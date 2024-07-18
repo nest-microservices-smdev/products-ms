@@ -86,4 +86,32 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
       },
     });
   }
+
+  async validateProducts(productIds: number[]): Promise<Product[]> {
+    const ids = [...new Set(productIds)];
+
+    console.log('ids', ids);
+
+    const products = await this.product.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+        available: true,
+      },
+    });
+
+    if (products.length !== ids.length) {
+      const notFoundIds = ids.filter(
+        (id) => !products.map((product) => product.id).includes(id),
+      );
+
+      throw new RpcException({
+        statusCode: HttpStatus.NOT_FOUND,
+        message: `Products with ids ${notFoundIds.join(', ')} not found`,
+      });
+    }
+
+    return products;
+  }
 }
