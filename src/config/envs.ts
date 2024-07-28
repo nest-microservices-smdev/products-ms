@@ -29,5 +29,5 @@ const envVars: EnvVars = value;
 export const envs = {
   port: envVars.PORT,
   databaseUrl: envVars.DATABASE_URL,
-  natsServers: process.env.NATS_SERVER,
+  natsServers: envVars.NATS_SERVERS,
 };
