@@ -1,6 +1,7 @@
 import { Controller, ParseIntPipe } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 
+import { IProductsController } from './interfaces/product-controller.interface';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -10,7 +11,7 @@ import { getActionName } from 'src/common/constants';
 const ACTIONS = getActionName('product');
 
 @Controller('products')
-export class ProductsController {
+export class ProductsController implements IProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @MessagePattern({ cmd: ACTIONS.create })
